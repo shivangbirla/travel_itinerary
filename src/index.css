@@ -1,0 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .border-style {
+    border: 2px solid #61a5c2; /* Green border */
+    box-shadow: 0 3px 15px #61a5c2; /* Green shadow with a bit of offset */
+    backdrop-filter: blur(
+      20px
+    ); /* Increased blur for a more pronounced effect */
+  }
+}
