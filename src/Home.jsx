@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <>
       <div className="bg-[#111827] min-h-screen">
-        <Navbar />
+        {/* <Navbar /> */}
         <Hero />
         <Form />
       </div>

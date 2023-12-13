@@ -30,7 +30,7 @@ export default function Login() {
               type="text"
             />
           </div>
-          <div className="flex justify-between  py-2">
+          <div className="flex justify-between text-[14px] py-2">
             <p className="flex items-center">
               <input className="mr-2" type="checkbox" />
               Remember Me
