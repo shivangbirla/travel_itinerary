@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Autocomplete, AutocompleteItem, Chip } from "@nextui-org/react";
-
+import {
+  Autocomplete,
+  AutocompleteItem,
+  Chip,
+  CircularProgress,
+} from "@nextui-org/react";
+import fs from "fs";
 // import BasicOutput from "./BasicOutput";
 import data from "../data/data";
 import { Input } from "@nextui-org/react";
 
 const Form = () => {
-  const [apiData, setApiData] = useState("");
+  const [apiData, setApiData] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   const [country, setcountry] = useState("");
@@ -21,8 +26,10 @@ const Form = () => {
   const [allergy, setAllergy] = useState();
   const [item, setItem] = useState();
   const [type, settype] = useState();
+  const [loading, setLoading] = useState(false);
 
   const basicOutputRef = useRef(null);
+  console.log(apiData);
 
   const fetchOptions = async () => {
     try {
@@ -69,7 +76,7 @@ const Form = () => {
       age,
     };
 
-    console.log(requestBody)
+    console.log(requestBody);
 
     try {
       const response = await fetch("http://localhost:8000/generate_meal_plan", {
@@ -80,20 +87,59 @@ const Form = () => {
         body: JSON.stringify(requestBody),
       });
 
+      // eslint-disable-next-line no-constant-condition
       if (response.ok) {
         const resData = await response.json();
-        console.log("Form submitted successfully:", resData);
+        console.log("Form submitted successfully:", resData, resData.meal_plan);
 
         // Assuming resData has a structure similar to your sample data
         // setApiData(resData[0]);
 
         // Scroll to BasicOutput
+        const mealPlanString = resData.meal_plan;
+        // const mealPlanString = ""
+        console.log(mealPlanString);
+        // const days = mealPlanString.split("Day");
+        // const mealPlan = days.slice(1).map((day, index) => {
+        //   const [dayNum, ...meals] = day.trim().split(/\r?\n(?=-)/); // Split by new line followed by -
+        //   const formattedMeals = meals.map((meal) => {
+        //     const [mealTime, mealContent] = meal.split(":");
+        //     const [mealName, ...details] = mealContent.split("- Ingredients:");
+        //     const ingredients = details[0]
+        //       .split("- Recipe:")[0]
+        //       .trim()
+        //       .split(", ");
+        //     const steps = details[0]
+        //       .split("- Recipe:")[1]
+        //       .trim()
+        //       .split(/\d+\./)
+        //       .slice(1)
+        //       .map((step) => step.trim());
+
+        //     return {
+        //       mealTime: mealTime.trim(),
+        //       mealName: mealName.trim(),
+        //       ingredients,
+        //       steps,
+        //     };
+        //   });
+
+        //   return {
+        //     day: `Day ${index + 1}`,
+        //     meals: formattedMeals,
+        //   };
+        // });
+
+        setApiData(JSON.parse(mealPlanString));
+
         scrollToBasicOutput();
       } else {
-        throw new Error(`Error: ${await response.text()}`);
+        // throw new Error(`Error: ${await response.text()}`);
       }
     } catch (error) {
       console.error("Error submitting form:", error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -118,10 +164,10 @@ const Form = () => {
   };
   console.log("country", country);
   return (
-    <div className="container mx-auto p-8">
+    <div className="container mx-auto p-4 md:p-8">
       <form
         onSubmit={handleFormSubmit}
-        className="flex flex-col gap-4 border-style w-full xl:w-[800px] mx-auto  bg-slate-700 p-10 rounded-2xl"
+        className="flex flex-col gap-3 md:gap-4 border-style w-full xl:w-[800px] mx-auto  bg-slate-700 p-5 xl:p-10 rounded-2xl"
       >
         <Autocomplete
           label="Country"
@@ -180,7 +226,7 @@ const Form = () => {
               placeholder="Enter Cuisine"
               onKeyDown={(e) => {
                 handleKeyDown(e);
-                handleInputKeyDown(e)
+                handleInputKeyDown(e);
               }}
             />
           </div>
@@ -271,43 +317,91 @@ const Form = () => {
         <div className="flex items-center justify-center ">
           <button
             type="submit"
-            className="bg-[#1a659e] hover:bg-[#2c7da0] text-white py-2.5 px-6 rounded-md focus:outline-none text-[16px]"
-            onClick={handleFormSubmit}
+            className="bg-[#1a659e] flex items-center justify-center hover:bg-[#2c7da0] w-full max-w-[700px] text-white py-2.5 px-6 rounded-md focus:outline-none text-[16px]  disabled:cursor-none"
+            onClick={(e) => {
+              handleFormSubmit(e);
+              setLoading(true);
+            }}
+            disabled={loading}
           >
-            Generate
+            {loading ? (
+              <CircularProgress
+                classNames={{
+                  svg: " drop-shadow-md",
+                  indicator: "stroke-white",
+                  track: "stroke-white/10",
+                  value: "text-white",
+                }}
+              />
+            ) : (
+              "Generate"
+            )}
           </button>
         </div>
       </form>
 
       {/* output-- */}
-      <div className="mt-[150px] xl:mt-48 mx-auto">
-        <h2 className="text-white text-[30px] text-center mb-6">
-          Travel Itinerary
-        </h2>
-        <div
-          ref={basicOutputRef}
-          className=" w-full xl:w-[1200px] mx-auto bg-white p-10 rounded-2xl shadow-2xl"
-        >
-          <h2 className="text-2xl font-semibold  ml-2">Day 1</h2>
-          {data.map((location, index) => (
-            <div key={index} className="mb-6 p-4 border rounded-md shadow-md">
-              <h2 className="text-xl font-semibold mb-2">{location.name}</h2>
-              <p className="text-gray-600">{location.description}</p>
-              <div className="flex justify-between mt-4">
-                <div>
-                  <p className="font-semibold">Open: {location.open}</p>
-                </div>
-                <div>
-                  <p className="font-semibold">Close: {location.close}</p>
-                </div>
-                <div>
-                  <p className="font-semibold">Price: {location.price}</p>
+      {apiData && (
+        <div className="mt-[150px] xl:mt-48 mx-auto">
+          <h2 className="text-white text-[30px] text-center mb-6">
+            Nutri-Chimp
+          </h2>
+          <div
+            ref={basicOutputRef}
+            className=" w-full xl:w-[1200px] mx-auto bg-slate-600 text-white p-2 xl:p-10 rounded-2xl shadow-2xl"
+          >
+            {Object.entries(apiData).map(([key, value], index) => (
+              <div
+                key={index}
+                className="mb-6 p-4 border rounded-md shadow-md border-white"
+              >
+                <h1 className="text-xl font-semibold mb-2">
+                  {key.toUpperCase()}
+                </h1>
+                <hr />
+                <div className="w-full flex flex-col gap-3">
+                  {Object.entries(value).map(([key2, value2], index2) => (
+                    <div key={index2} className="w-full flex flex-col gap-2">
+                      <h2 className="w-full text-center mt-2 text-foreground-600 text-medium">
+                        {key2.toUpperCase()}
+                      </h2>
+                      <h2 className="w-full underline text-center text-foreground-600 text-lg">
+                        {value2?.recipe}
+                      </h2>
+                      <h2 className="w-full text-center text-foreground-600 text-medium">
+                        Ingredients
+                      </h2>
+                      <div className="flex flex-col gap-1">
+                        {value2?.ingredients?.map((ingredient, index3) => (
+                          <h2
+                            className="w-full text-left text-foreground-600 text-sm"
+                            key={index3}
+                          >
+                            {ingredient}
+                          </h2>
+                        ))}
+                      </div>
+                      <h2 className="w-full text-center text-foreground-600 text-medium">
+                        Instructions
+                      </h2>
+                      <div className="flex flex-col gap-1">
+                        {value2?.instructions?.map((instruction, index4) => (
+                          <h2
+                            className="w-full text-left text-foreground-600 text-sm"
+                            key={index4}
+                          >
+                            {instruction}
+                          </h2>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
