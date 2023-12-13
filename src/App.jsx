@@ -7,13 +7,15 @@ import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
-    <>
+    <div className="dark bg-[#111827] min-h-screen">
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/home" element={<Home />} />
-      </Routes>
-    </>
+      <div className="pt-10">
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/home" element={<Home />} />
+        </Routes>
+      </div>
+    </div>
   );
 };
 

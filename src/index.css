@@ -17,4 +17,12 @@
       20px
     ); /* Increased blur for a more pronounced effect */
   }
+
+
+.backnavdrop {
+  backdrop-filter: blur(100px);
+  perspective: 1000;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
 }
