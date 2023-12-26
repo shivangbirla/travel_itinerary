@@ -1,0 +1,128 @@
+import { Chip } from "@nextui-org/react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+
+const MultiSelect = ({ chips, setChips, label, options = [], placeholder }) => {
+  const [search, setSearch] = useState("");
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [height, setHeight] = useState();
+  const ref = useRef();
+  const ref2 = useRef();
+  const topId = "top"; 
+
+  const popupOptions = useMemo(() => {
+    return options?.filter((option) => {
+      return option?.toLowerCase().includes(search.toLowerCase());
+    });
+  }, [search, options]);
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      // ... (existing code for handling Enter key remains unchanged)
+      event.preventDefault();
+      let newChip = event.target.value.trim();
+
+      if (popupOptions.length !== 0 && highlightedIndex !== -1) {
+        newChip = popupOptions[highlightedIndex];
+      }
+      if (newChip) {
+        setChips((prevChips) => [...prevChips, newChip]);
+        setSearch(""); // Clear the input after adding the chip
+      }
+      return;
+    } else if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setHighlightedIndex((prevIndex) =>
+        prevIndex < popupOptions.length - 1 ? prevIndex + 1 : prevIndex
+      );
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setHighlightedIndex((prevIndex) =>
+        prevIndex > 0 ? prevIndex - 1 : prevIndex
+      );
+    }
+  };
+  const handleChipCloseFoodItem = (indexToRemove) => {
+    setChips((prevChips) =>
+      prevChips.filter((_, index) => index !== indexToRemove)
+    );
+  };
+  useEffect(() => {
+    setHeight(ref.current?.offsetHeight);
+    console.log(ref2)
+     if (ref2.current) {
+       ref2.current.style.top = `${ref.current.offsetHeight}px`;
+     }
+  }, [chips]);
+  console.log(height);
+  
+  return (
+    <div
+      ref={ref}
+      className="bg-default-100  py-2 px-3 flex flex-col min-h-[56px] rounded-medium relative"
+    >
+      <label
+        htmlFor="numdays"
+        className=" z-10 pointer-events-none origin-top-left subpixel-antialiased block text-foreground-500 cursor-text will-change-auto !duration-200 !ease-out motion-reduce:transition-none transition-[transform,color,left,opacity] group-data-[filled-within=true]:text-default-600 group-data-[filled-within=true]:pointer-events-auto group-data-[filled-within=true]:scale-85 text-xs group-data-[filled-within=true]:-translate-y-[calc(50%_+_theme(fontSize.small)/2_-_6px)] pe-2 max-w-full text-ellipsis overflow-hidden"
+      >
+        {label}
+      </label>
+      <div className="flex flex-row  flex-wrap gap-2 ">
+        {chips?.map((chip, index) => (
+          <Chip
+            onClose={() => {
+              handleChipCloseFoodItem(index);
+            }}
+            variant="flat"
+            key={chip}
+          >
+            {chip}
+          </Chip>
+        ))}
+
+        <input
+          type="text"
+          className="bg-inherit relative outline-none border-none ring-none w-fit min-w-[150px] placeholder:text-foreground-500 text-foreground-600 font-normal text-small"
+          placeholder={placeholder ?? "Search "}
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            handleKeyDown(e);
+          }}
+        />
+
+        { (
+          <div
+            className={`${search===""&&"hidden"} absolute left-0 w-full z-50 bg-content1 px-2.5 py-1 rounded-lg  transition-all   !duration-1000 delay-300 outline-none`}
+            ref={ref2}
+          >
+            <div className="px-1 py-2 overflow-scroll max-h-[300px] flex flex-col">
+              {popupOptions?.map((option, index) => (
+                <div
+                  className={`flex flex-col justify-center text-white px-2 ${
+                    highlightedIndex === index ? "bg-gray-700  rounded-md" : "" // Add a background color or any styling for the highlighted option
+                  }`}
+                  key={option}
+                  onClick={() => {
+                    setChips((prevChips) => [...prevChips, option]);
+                    setSearch("");
+                  }}
+                >
+                  {option}
+                </div>
+              ))}
+              {popupOptions?.length === 0 && (
+                <div className="flex flex-col justify-center text-white">
+                  No Results Found
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default MultiSelect;

@@ -5,8 +5,11 @@ import PlanetTwo from "../assets/planet-2.svg";
 import PlanetThree from "../assets/planet-3.svg";
 import PlanetFour from "../assets/planet-4.svg";
 import landingImg from "../assets/landing-img.png";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+
+  const navigate = useNavigate()
   const fadeLeft = {
     hidden: { opacity: 0, x: -100 },
     visible: { opacity: 1, x: 0 },
@@ -56,6 +59,9 @@ const Hero = () => {
               scale: 0.95,
             }}
             className="cursor-pointer py-1 px-2 md:py-2 md:px-4 border-2 border-white text-white rounded-full mt-5 text-[13px] md:text-[16px]"
+            onClick={()=>{
+              navigate('/home')
+            }}
           >
             Get Started
           </motion.button>
