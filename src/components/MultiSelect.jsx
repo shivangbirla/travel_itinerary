@@ -16,8 +16,8 @@ const MultiSelect = ({ chips, setChips, label, options = [], placeholder }) => {
   }, [search, options]);
 
   const handleKeyDown = (event) => {
-    alert(event.key);
-    if (event.key === "Enter" || event.key === "Tab" || event.key === "Next") {
+    // alert(event.key);
+    if (event.key === "Enter" || event.key === "Tab" || event.charCode === 13 || event.keyCode === 13) {
       console.log("tab");
       // ... (existing code for handling Enter key remains unchanged)
       event.preventDefault();
