@@ -45,28 +45,6 @@ const Form = () => {
   const BASE_URL = "http://127.0.0.1:8000";
   //  const BASE_URL = "https://generative-travel-itinerary.vercel.app";
 
-  const obj = {
-    breakfast: {
-      dish_name: "Power Packed Paratha",
-      recipe:
-        "Power Packed Paratha is a nutritious and delicious Indian breakfast dish. It is made by stuffing a combination of grated vegetables and spices into a whole wheat dough. Here's the recipe:\n1. In a bowl, mix together 1 cup whole wheat flour, 1/2 cup grated carrots, 1/2 cup grated cauliflower, 1/4 cup chopped spinach, 1/4 cup finely chopped onions, 1/2 teaspoon ginger-garlic paste, 1/2 teaspoon cumin powder, 1/4 teaspoon turmeric powder, 1/4 teaspoon red chili powder, and salt to taste.\n2. Gradually add water to the mixture and knead it into a smooth dough.\n3. Divide the dough into small portions and roll out each portion into a small circle.\n4. Heat a non-stick pan and cook the paratha on both sides until golden brown, using a little oil if needed.\n5. Serve the Power Packed Paratha with a side of fresh yogurt or tomato chutney.",
-    },
-    lunch: {
-      dish_name: "Kid's Favorite Vegetable Biryani",
-      recipe:
-        "Kid's Favorite Vegetable Biryani is a flavorful and nutritious rice dish that incorporates a variety of vegetables and aromatic spices. Here's how you can make it:\n1. Heat 2 tablespoons of oil in a pan and add 1 teaspoon cumin seeds, 2-3 cloves, 2-3 green cardamom pods, 1-inch cinnamon stick, and a bay leaf. Sauté for a minute until fragrant.\n2. Add 1 finely chopped onion and cook until golden brown.\n3. Add 1 tablespoon ginger-garlic paste and cook for a minute.\n4. Add 1/2 cup mixed vegetables (such as peas, carrots, beans) and sauté for a few minutes.\n5. Add 1 cup soaked basmati rice and mix well.\n6. Add 2 cups water, salt to taste, and a pinch of saffron strands (dissolved in 1 tablespoon milk). Stir gently.\n7. Cover the pan and let it simmer for about 15-20 minutes until the rice is cooked and the flavors are well combined.\n8. Garnish with fried onions, chopped coriander leaves, and roasted cashews.\nServe the Kid's Favorite Vegetable Biryani with cucumber raita and a side of salad.",
-    },
-    snack: {
-      dish_name: "Cheesy Veggie Toast",
-      recipe:
-        "Cheesy Veggie Toast is a quick and healthy snack option for kids. Here's how you can make it:\n1. Take whole wheat bread slices and lightly toast them.\n2. In a bowl, mix together 1/2 cup grated cheese, 1/4 cup finely chopped bell peppers, 1/4 cup grated zucchini, and a pinch of black pepper.\n3. Spread the cheese and vegetable mixture evenly on the toasted bread slices.\n4. Place the slices under the broiler for a few minutes until the cheese melts and turns golden brown.\n5. Cut the toast into small triangles or any desired shape.\nServe the Cheesy Veggie Toast with a glass of freshly squeezed orange juice or a fruit smoothie.",
-    },
-    dinner: {
-      dish_name: "Creamy Spinach Pasta",
-      recipe:
-        "Creamy Spinach Pasta is a delicious and nutritious dinner option for kids. Here's the recipe:\n1. Cook 1 cup whole wheat pasta according to package instructions until al dente. Drain and set aside.\n2. Heat 1 tablespoon olive oil in a pan and add 2 cloves of minced garlic. Sauté for a minute.\n3. Add 2 cups chopped spinach and cook until wilted.\n4. In a blender, combine 1/2 cup soaked cashews, 1/2 cup unsweetened almond milk, 1 tablespoon nutritional yeast, and salt to taste. Blend until smooth and creamy.\n5. Pour the creamy sauce over the cooked spinach and mix well.\n6. Add the cooked pasta to the sauce and toss until evenly coated.\n7. Garnish with chopped fresh basil leaves and a sprinkle of grated cheese (optional).\nServe the Creamy Spinach Pasta with a side of steamed vegetables.",
-    },
-  };
 
   const fetchOptions = async () => {
     try {
