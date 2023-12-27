@@ -17,8 +17,10 @@ import fs from "fs";
 import data from "../data/data";
 import { Input } from "@nextui-org/react";
 import MultiSelect from "./MultiSelect";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Form = () => {
+   const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
   const [apiData, setApiData] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -40,8 +42,8 @@ const Form = () => {
   const basicOutputRef = useRef(null);
   console.log(apiData);
 
-  // const BASE_URL = "http://127.0.0.1:8000";
-   const BASE_URL = "https://generative-travel-itinerary.vercel.app";
+  const BASE_URL = "http://127.0.0.1:8000";
+  //  const BASE_URL = "https://generative-travel-itinerary.vercel.app";
 
   const obj = {
     breakfast: {
@@ -99,6 +101,10 @@ const Form = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    if(!isAuthenticated){
+      loginWithRedirect();
+      return;
+    }
 
     const requestBody = {
       country: country[0],
