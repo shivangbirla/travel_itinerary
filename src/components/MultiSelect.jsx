@@ -92,9 +92,7 @@ const MultiSelect = ({ chips, setChips, label, options = [], placeholder }) => {
           onKeyDown={(e) => {
             handleKeyDown(e);
           }}
-          onKeyPress={(e) => {
-            handleKeyDown(e);
-          }}
+         
           enterKeyHint="enter"
         />
 
