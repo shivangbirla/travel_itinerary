@@ -16,9 +16,8 @@ const MultiSelect = ({ chips, setChips, label, options = [], placeholder }) => {
   }, [search, options]);
 
   const handleKeyDown = (event) => {
-    if (event.key === "Enter" || event.key === "Tab") {
-
-      console.log("tab")
+    if (event.key === "Enter" || event.key === "Tab" || event.key === "Next") {
+      console.log("tab");
       // ... (existing code for handling Enter key remains unchanged)
       event.preventDefault();
       let newChip = event.target.value.trim();
