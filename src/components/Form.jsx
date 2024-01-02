@@ -52,9 +52,9 @@ const Form = () => {
   const [data, setData] = useState({});
 
   const basicOutputRef = useRef(null);
-  console.log(apiData);
 
-  const BASE_URL = "http://127.0.0.1:8000";
+  const BASE_URL = import.meta.env.VITE_SERVER_URI;
+
   //  const BASE_URL = "https://generative-travel-itinerary.vercel.app";
 
   const fetchOptions = async () => {
@@ -88,35 +88,38 @@ const Form = () => {
     }
   };
 
- 
-
   const getMealPlan = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(
-        `${BASE_URL}/generate_recipes_and_ingredients`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(finalOptions),
-        }
-      );
+      const response = await fetch(`${BASE_URL}/get_final_meal_plan`, {
+        method: "GET",
+       
+      });
 
       // eslint-disable-next-line no-constant-condition
       if (response.ok) {
         const resData = await response.json();
-        console.log("Form submitted successfully:", resData);
+        console.log(
+          "Form submitted successfully:",
+          resData,
+          resData?.meal_plan?.recipes_and_ingredients
+        );
 
-        const mealPlanString = resData?.recipes_and_ingredients;
+        const mealPlanString = resData?.meal_plan?.recipes_and_ingredients;
         // const mealPlanString = ""
-        const obj = JSON.parse(mealPlanString);
-        let ob = obj;
-        while (!Object.keys(ob).includes("breakfast")) {
-          ob = ob[Object.keys(ob)[0]];
+        try {
+          const obj = JSON.parse(mealPlanString);
+          console.log("first", obj);
+          let ob = obj;
+          while (!Object.keys(ob).includes("breakfast")) {
+            ob = ob[Object.keys(ob)[0]];
+          }
+          console.log("first", obj, ob);
+          setData(ob);
+        } catch (error) {
+          console.log(error)
         }
-        setData(ob);
+        
       } else {
         // throw new Error(`Error: ${await response.text()}`);
       }
@@ -127,8 +130,6 @@ const Form = () => {
     }
   };
   console.log(data);
-
-
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -148,10 +149,9 @@ const Form = () => {
       age,
     };
 
-    console.log(requestBody);
 
     try {
-      const response = await fetch(`${BASE_URL}/generate_dish_names`, {
+      const response = await fetch(`${BASE_URL}/generate_meal_plan`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -162,13 +162,19 @@ const Form = () => {
       // eslint-disable-next-line no-constant-condition
       if (response.ok) {
         const resData = await response.json();
-        console.log("Form submitted successfully:", resData);
 
-        const mealPlanString = resData.dish_names;
+        const mealPlanString = resData;
+
+        const obj = JSON.parse(mealPlanString?.meal_plan?.dish_names);
+
+        let ob = obj;
+        while (!Object.keys(ob).includes("breakfast")) {
+          ob = ob[Object.keys(ob)[0]];
+        }
         // const mealPlanString = ""
         // console.log(mealPlanString);
 
-        setApiData(JSON.parse(mealPlanString));
+        setApiData(ob);
         setFinalOptions(requestBody);
 
         scrollToBasicOutput();
@@ -202,9 +208,6 @@ const Form = () => {
     }
   };
 
- 
-
-  console.log("country", country);
   return (
     <div className="container mx-auto p-4 md:p-8">
       <form
