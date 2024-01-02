@@ -4,6 +4,7 @@ import {
   AccordionItem,
   Autocomplete,
   AutocompleteItem,
+  Button,
   Chip,
   CircularProgress,
   Dropdown,
@@ -17,12 +18,21 @@ import fs from "fs";
 import data from "../data/data";
 import { Input } from "@nextui-org/react";
 import MultiSelect from "./MultiSelect";
-import { useAuth0 } from "@auth0/auth0-react";
+// import { useAuth0 } from "@auth0/auth0-react";
+import InnerAccordianElement from "./InnerAccordianElement";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+} from "@nextui-org/react";
 
 const Form = () => {
-   const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
+  // const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
   const [apiData, setApiData] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [country, setcountry] = useState([]);
   const [numdays, setNumdays] = useState("");
@@ -38,13 +48,14 @@ const Form = () => {
   const [loading, setLoading] = useState(false);
   const [foodItem, setFoodItem] = useState([]);
   const [foodItemInput, setFoodItemInput] = useState("");
+  const [finalOptions, setFinalOptions] = useState();
+  const [data, setData] = useState({});
 
   const basicOutputRef = useRef(null);
   console.log(apiData);
 
   const BASE_URL = "http://127.0.0.1:8000";
   //  const BASE_URL = "https://generative-travel-itinerary.vercel.app";
-
 
   const fetchOptions = async () => {
     try {
@@ -77,12 +88,54 @@ const Form = () => {
     }
   };
 
+ 
+
+  const getMealPlan = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `${BASE_URL}/generate_recipes_and_ingredients`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(finalOptions),
+        }
+      );
+
+      // eslint-disable-next-line no-constant-condition
+      if (response.ok) {
+        const resData = await response.json();
+        console.log("Form submitted successfully:", resData);
+
+        const mealPlanString = resData?.recipes_and_ingredients;
+        // const mealPlanString = ""
+        const obj = JSON.parse(mealPlanString);
+        let ob = obj;
+        while (!Object.keys(ob).includes("breakfast")) {
+          ob = ob[Object.keys(ob)[0]];
+        }
+        setData(ob);
+      } else {
+        // throw new Error(`Error: ${await response.text()}`);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  console.log(data);
+
+
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if(!isAuthenticated){
-      loginWithRedirect();
-      return;
-    }
+    // if(!isAuthenticated){
+    //   loginWithRedirect();
+    //   return;
+    // }
 
     const requestBody = {
       country: country[0],
@@ -98,7 +151,7 @@ const Form = () => {
     console.log(requestBody);
 
     try {
-      const response = await fetch(`${BASE_URL}/generate_meal_plan`, {
+      const response = await fetch(`${BASE_URL}/generate_dish_names`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -109,47 +162,14 @@ const Form = () => {
       // eslint-disable-next-line no-constant-condition
       if (response.ok) {
         const resData = await response.json();
-        console.log("Form submitted successfully:", resData, resData.meal_plan);
+        console.log("Form submitted successfully:", resData);
 
-        // Assuming resData has a structure similar to your sample data
-        // setApiData(resData[0]);
-
-        // Scroll to BasicOutput
-        const mealPlanString = resData.meal_plan;
+        const mealPlanString = resData.dish_names;
         // const mealPlanString = ""
-        console.log(mealPlanString);
-        // const days = mealPlanString.split("Day");
-        // const mealPlan = days.slice(1).map((day, index) => {
-        //   const [dayNum, ...meals] = day.trim().split(/\r?\n(?=-)/); // Split by new line followed by -
-        //   const formattedMeals = meals.map((meal) => {
-        //     const [mealTime, mealContent] = meal.split(":");
-        //     const [mealName, ...details] = mealContent.split("- Ingredients:");
-        //     const ingredients = details[0]
-        //       .split("- Recipe:")[0]
-        //       .trim()
-        //       .split(", ");
-        //     const steps = details[0]
-        //       .split("- Recipe:")[1]
-        //       .trim()
-        //       .split(/\d+\./)
-        //       .slice(1)
-        //       .map((step) => step.trim());
-
-        //     return {
-        //       mealTime: mealTime.trim(),
-        //       mealName: mealName.trim(),
-        //       ingredients,
-        //       steps,
-        //     };
-        //   });
-
-        //   return {
-        //     day: `Day ${index + 1}`,
-        //     meals: formattedMeals,
-        //   };
-        // });
+        // console.log(mealPlanString);
 
         setApiData(JSON.parse(mealPlanString));
+        setFinalOptions(requestBody);
 
         scrollToBasicOutput();
       } else {
@@ -182,14 +202,7 @@ const Form = () => {
     }
   };
 
-  // handle food item function
-
-  //  const handleInputKeyDownFoodItem = (event) => {
-  //    if (event.key === "Enter") {
-  //      event.preventDefault();
-  //      // Prevent form submission when Enter is pressed in the input field
-  //    }
-  //  };
+ 
 
   console.log("country", country);
   return (
@@ -370,40 +383,58 @@ const Form = () => {
       </form>
 
       {/* output-- */}
-      {apiData && (
+      {apiData && finalOptions && (
         <div className="mt-[150px] xl:mt-48 mx-auto">
           <h2 className="text-white text-[30px] text-center mb-6">
             Nutri-Chimp
           </h2>
-          <div className="w-full xl:w-[900px] mx-auto" ref={basicOutputRef}>
-            <Accordion variant="splitted">
-              {Object.entries(apiData).map(([key, value], index) => (
-                <AccordionItem
-                  key="1"
-                  aria-label="Accordion 1"
-                  title={value?.dish_name}
-                  subtitle={key[0].toUpperCase() + key.slice(1)}
-                  className="text-gray-400"
-                >
-                  <ol>
-                    {value?.recipe.split(". ").map((item, index) => {
-                      const step = item.replace(/\d+\s*$/, ""); // Remove trailing numbers
-                      return (
-                        <li key={index}>
-                          {index>0&&<span>{index }. </span>}{" "}
-                          {/* Display step numbers */}
-                          {step}
-                          {index===0 && ":"}
-                        </li>
-                      );
-                    })}
-                  </ol>
-                </AccordionItem>
-              ))}
-            </Accordion>
+          <div className="w-full  xl:w-[900px] mx-auto">
+            <Table aria-label="Example static collection table">
+              <TableHeader>
+                <TableColumn>Meal</TableColumn>
+                <TableColumn>Recipe</TableColumn>
+              </TableHeader>
+              <TableBody>
+                {Object.entries(apiData).map(([key, value], index) => (
+                  <TableRow key={index} className="text-gray-100">
+                    <TableCell>{key[0].toUpperCase() + key.slice(1)}</TableCell>
+                    <TableCell>{value}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+
+          <div className="w-full flex items-center justify-center my-4 xl:w-[900px]">
+            <Button
+              className=" mx-auto mt-4 self-end"
+              color="default"
+              isLoading={isLoading}
+              onClick={getMealPlan}
+            >
+              Generate How to make
+            </Button>
           </div>
         </div>
       )}
+
+      {
+        <div className="w-full xl:w-[900px] mt-6 mx-auto" ref={basicOutputRef}>
+          <Accordion variant="splitted">
+            {Object.entries(data).map(([key, value], index) => (
+              <AccordionItem
+                key={index}
+                aria-label="Accordion 1"
+                title={value.name}
+                subtitle={key[0].toUpperCase() + key.slice(1)}
+                className="text-gray-400"
+              >
+                <InnerAccordianElement data={value} />
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      }
     </div>
   );
 };
