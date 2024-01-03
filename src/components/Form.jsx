@@ -78,7 +78,12 @@ const Form = () => {
 
   const handleKeyDown = (event) => {
     // event.preventDefault();
-    if (event.key === "Enter") {
+    if (
+      event.key === "Enter" ||
+      event.key === "Tab" ||
+      event.charCode === 13 ||
+      event.keyCode === 13
+    ) {
       const newCuisine = event.target.value.trim();
       if (newCuisine) {
         setMoreCuisines((prevCuisines) => [...prevCuisines, newCuisine]);
@@ -287,6 +292,7 @@ const Form = () => {
                 handleKeyDown(e);
                 handleInputKeyDown(e);
               }}
+              enterKeyHint="enter"
             />
           </div>
         </div>

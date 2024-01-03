@@ -8,7 +8,7 @@ const Hero = () => {
           Nutri-Chimp
         </h1>
         <span className="text-[#D4DCE5] text-lg text-center overflow-hidden mt-4">
-          Craft an expertly designed travel plan using the given details.
+          Generate a meal plan using the given details.
         </span>
       </div>
     </>

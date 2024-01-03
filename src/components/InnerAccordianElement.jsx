@@ -27,7 +27,7 @@ const InnerAccordianElement = ({ data }) => {
             <TableBody>
               {data?.ingredients.map((ingredient, index) => (
                 <TableRow key={index}>
-                  <TableCell>{ingredient.name}</TableCell>
+                  <TableCell>{ingredient.name ?? ingredient.ingredient}</TableCell>
                   <TableCell>{ingredient.quantity}</TableCell>
                 </TableRow>
               ))}
