@@ -233,13 +233,13 @@ const Form = () => {
             </AutocompleteItem>
           ))}
         </Autocomplete> */}
-        <MultiSelect
+        {/* <MultiSelect
           chips={country}
           setChips={setcountry}
           label={"Search A Country "}
           options={options?.countries}
           placeholder={"Search A Country"}
-        />
+        /> */}
         <MultiSelect
           chips={cuisines}
           setChips={setCuisines}
