@@ -9,6 +9,7 @@ import {
   TableRow,
   TableCell,
   CircularProgress,
+  Card,
 } from "@nextui-org/react";
 //  const BASE_URL = "https://generative-travel-itinerary.vercel.app";
 
@@ -19,26 +20,39 @@ const InnerAccordianElement = ({ data }) => {
     <div className="flex flex-col gap-3">
       {data?.ingredients ? (
         <>
-          <Table aria-label="Example static collection table">
-            <TableHeader>
-              <TableColumn>NAME</TableColumn>
-              <TableColumn>QUANTITY</TableColumn>
-            </TableHeader>
-            <TableBody>
-              {data?.ingredients.map((ingredient, index) => (
-                <TableRow key={index}>
-                  <TableCell>{ingredient.name ?? ingredient.ingredient}</TableCell>
-                  <TableCell>{ingredient.quantity}</TableCell>
-                </TableRow>
+          <Card className="p-4 flex flex-col gap-4">
+            <Table
+              isStriped
+              removeWrapper
+              aria-label="Example static collection table"
+            >
+              <TableHeader>
+                <TableColumn>NAME</TableColumn>
+                <TableColumn>QUANTITY</TableColumn>
+              </TableHeader>
+              <TableBody>
+                {data?.ingredients.map((ingredient, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      {ingredient.name ?? ingredient.ingredient}
+                    </TableCell>
+                    <TableCell>{ingredient.quantity}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+
+            <h2 className="text-white text-2xl font-semibold mt-4">
+              Instructions:
+            </h2>
+            <ol>
+              {data?.instructions.map((instruction, index) => (
+                <li key={index} className="text-gray-300">
+                  {instruction}
+                </li>
               ))}
-            </TableBody>
-          </Table>
-          <h2 className="text-white text-xl font-semibold">Instructions:</h2>
-          <ol>
-            {data?.instructions.map((instruction, index) => (
-              <li key={index}>{instruction}</li>
-            ))}
-          </ol>
+            </ol>
+          </Card>
         </>
       ) : (
         <div className="w-full h-20 flex justify-center items-center">

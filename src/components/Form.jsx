@@ -33,7 +33,7 @@ const Form = () => {
   // const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
   const [apiData, setApiData] = useState();
   const [isLoading, setIsLoading] = useState(false);
-
+  const [optionsMeals, setOptionsMeals] = useState([]);
   const [country, setcountry] = useState([]);
   const [numdays, setNumdays] = useState("");
   const [travelerType, setTravelerType] = useState("");
@@ -50,6 +50,7 @@ const Form = () => {
   const [foodItemInput, setFoodItemInput] = useState("");
   const [finalOptions, setFinalOptions] = useState();
   const [data, setData] = useState({});
+  const [selectedMeal, setSelectedMeal] = useState("");
 
   const basicOutputRef = useRef(null);
 
@@ -94,11 +95,20 @@ const Form = () => {
   };
 
   const getMealPlan = async () => {
+    if(!selectedMeal){
+      alert("Please select a meal")
+      return;
+    }
     setIsLoading(true);
     try {
-      const response = await fetch(`${BASE_URL}/get_final_meal_plan`, {
-        method: "GET",
-       
+      const response = await fetch(`${BASE_URL}/generate_meal_by_name`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: selectedMeal,
+        }),
       });
 
       // eslint-disable-next-line no-constant-condition
@@ -107,24 +117,23 @@ const Form = () => {
         console.log(
           "Form submitted successfully:",
           resData,
-          resData?.meal_plan?.recipes_and_ingredients
         );
 
-        const mealPlanString = resData?.meal_plan?.recipes_and_ingredients;
+        const mealPlanString = resData?.meal;
         // const mealPlanString = ""
         try {
           const obj = JSON.parse(mealPlanString);
           console.log("first", obj);
           let ob = obj;
-          while (!Object.keys(ob).includes("breakfast")) {
+          while (!Object.keys(ob).includes("ingredients")) {
             ob = ob[Object.keys(ob)[0]];
           }
           console.log("first", obj, ob);
+
           setData(ob);
         } catch (error) {
-          console.log(error)
+          console.log(error);
         }
-        
       } else {
         // throw new Error(`Error: ${await response.text()}`);
       }
@@ -144,16 +153,14 @@ const Form = () => {
     // }
 
     const requestBody = {
-      country: country[0],
-      primary_cuisine: cuisines[0],
-      other_cuisines: moreCuisines,
+      primary_cuisine: cuisines,
+      other_cuisines: [moreCuisines],
       vegetarian: veg,
       food_items_to_exclude: foodItem,
       preferred_food_type: [type],
-      allergies: allergy,
+      allergies: [allergy],
       age,
     };
-
 
     try {
       const response = await fetch(`${BASE_URL}/generate_meal_plan`, {
@@ -173,11 +180,28 @@ const Form = () => {
         const obj = JSON.parse(mealPlanString?.meal_plan?.dish_names);
 
         let ob = obj;
-        while (!Object.keys(ob).includes("breakfast")) {
+        while (!Object.keys(ob).includes("day_1")) {
+          console.log(ob);
           ob = ob[Object.keys(ob)[0]];
         }
+        console.log(ob);
         // const mealPlanString = ""
         // console.log(mealPlanString);
+        const allMeals = [];
+
+        // Iterate through days and push all values to the single array
+        for (const day in ob) {
+          const meals = obj[day];
+          allMeals.push(
+            meals.breakfast,
+            meals.lunch,
+            meals.snack,
+            meals.dinner
+          );
+        }
+        setOptionsMeals(allMeals);
+
+        console.log(allMeals);
 
         setApiData(ob);
         setFinalOptions(requestBody);
@@ -213,43 +237,30 @@ const Form = () => {
     }
   };
 
+
   return (
     <div className="container mx-auto p-4 md:p-8">
       <form
         onSubmit={handleFormSubmit}
         className="flex flex-col gap-3 md:gap-4 border-style w-full xl:w-[800px] mx-auto  bg-slate-700 p-5 xl:p-10 rounded-2xl"
       >
-        {/* <Autocomplete
-          label="Country"
-          color={"default"}
-          placeholder="Search an country"
-          className="min-w-xs "
-          value={country}
-          onSelectionChange={setcountry}
-        >
-          {options?.countries?.map((countryy) => (
-            <AutocompleteItem key={countryy} value={countryy}>
-              {countryy}
-            </AutocompleteItem>
-          ))}
-        </Autocomplete> */}
         {/* <MultiSelect
-          chips={country}
-          setChips={setcountry}
-          label={"Search A Country "}
-          options={options?.countries}
-          placeholder={"Search A Country"}
-        /> */}
-        <MultiSelect
           chips={cuisines}
           setChips={setCuisines}
-          label={"Search A Cuisines "}
+          label={"Search A Primary Cuisines "}
           options={options?.cuisines}
-          placeholder={"Search A Cuisines"}
+          placeholder={"Search A Primary Cuisines"}
         />
-        {/* <Autocomplete
-          label="Cuisine"
-          placeholder="Search an Cuisine"
+        <MultiSelect
+          chips={moreCuisines}
+          setChips={setMoreCuisines}
+          label={"Search A Secondary Cuisines "}
+          options={options?.cuisines}
+          placeholder={"Search A Primary Cuisines"}
+        /> */}
+        <Autocomplete
+          label="Search A Primary Cuisines"
+          placeholder="Search A Primary Cuisines"
           className="min-w-xs"
           value={cuisines}
           onSelectionChange={setCuisines}
@@ -259,43 +270,21 @@ const Form = () => {
               {countryy}
             </AutocompleteItem>
           ))}
-        </Autocomplete> */}
+        </Autocomplete>
+        <Autocomplete
+          label="Search A Secondary Cuisines"
+          placeholder="Search A Secondary Cuisines"
+          className="min-w-xs"
+          value={moreCuisines}
+          onSelectionChange={setMoreCuisines}
+        >
+          {options?.cuisines?.map((countryy) => (
+            <AutocompleteItem key={countryy} value={countryy}>
+              {countryy}
+            </AutocompleteItem>
+          ))}
+        </Autocomplete>
 
-        <div className="bg-default-100 relative py-2 px-3 flex flex-col min-h-[56px] rounded-medium">
-          <label
-            htmlFor="numdays"
-            className=" z-10 pointer-events-none origin-top-left subpixel-antialiased block text-foreground-500 cursor-text will-change-auto !duration-200 !ease-out motion-reduce:transition-none transition-[transform,color,left,opacity] group-data-[filled-within=true]:text-default-600 group-data-[filled-within=true]:pointer-events-auto group-data-[filled-within=true]:scale-85 text-xs group-data-[filled-within=true]:-translate-y-[calc(50%_+_theme(fontSize.small)/2_-_6px)] pe-2 max-w-full text-ellipsis overflow-hidden"
-          >
-            Other Cuisines
-          </label>
-          <div className="flex flex-row  flex-wrap gap-2">
-            {/* <Chip onClose={() => {}} variant="flat">
-            Chip
-          </Chip> */}
-            {moreCuisines.map((cuisine, index) => (
-              <Chip
-                onClose={() => {
-                  handleChipClose(index);
-                }}
-                variant="flat"
-                key={cuisine}
-              >
-                {cuisine}
-              </Chip>
-            ))}
-
-            <input
-              type="text"
-              className="bg-inherit outline-none border-none ring-none w-fit min-w-[150px] placeholder:text-foreground-500 text-foreground-600 font-normal text-small"
-              placeholder="Enter Cuisine"
-              onKeyDown={(e) => {
-                handleKeyDown(e);
-                handleInputKeyDown(e);
-              }}
-              enterKeyHint="enter"
-            />
-          </div>
-        </div>
         <MultiSelect
           chips={foodItem}
           setChips={setFoodItem}
@@ -318,8 +307,8 @@ const Form = () => {
           ))}
         </Autocomplete>
         <Autocomplete
-          label="Veg/Non-Veg"
-          placeholder="Search an Veg"
+          label="Is Meat Acceptable?"
+          placeholder="Is Meat Acceptable?"
           className="min-w-xs"
           value={veg}
           onSelectionChange={setVeg}
@@ -343,9 +332,9 @@ const Form = () => {
             </AutocompleteItem>
           ))}
         </Autocomplete>
-        {/* <Autocomplete
-          label="Allergies"
-          placeholder="Search an Allergies"
+        <Autocomplete
+          label="Search for Allergies"
+          placeholder="Search for Allergies"
           className="min-w-xs"
           value={allergy}
           onSelectionChange={setAllergy}
@@ -355,20 +344,20 @@ const Form = () => {
               {countryy}
             </AutocompleteItem>
           ))}
-        </Autocomplete> */}
+        </Autocomplete>
 
-        <MultiSelect
+        {/* <MultiSelect
           chips={allergy}
           setChips={setAllergy}
           label={"Search for Allergies "}
           options={options?.allergies}
           placeholder={"Search for Allergies"}
-        />
+        /> */}
 
         <div className="flex items-center justify-center ">
           <button
             type="submit"
-            className="bg-[#1a659e] flex items-center justify-center hover:bg-[#2c7da0] w-full max-w-[700px] text-white py-2.5 px-6 rounded-md focus:outline-none text-[16px]  disabled:cursor-none"
+            className="bg-[#1a659e] flex items-center justify-center hover:bg-[#2c7da0] w-full max-w-[700px] text-white py-2.5 px-6 rounded-md focus:bg-[#2c7da0] focus:outline-none text-[16px]  disabled:cursor-none"
             onClick={(e) => {
               handleFormSubmit(e);
               setLoading(true);
@@ -391,8 +380,7 @@ const Form = () => {
         </div>
       </form>
 
-      {/* output-- */}
-      {apiData && finalOptions && (
+      {/* {apiData && finalOptions && (
         <div className="mt-[150px] xl:mt-48 mx-auto">
           <h2 className="text-white text-[30px] text-center mb-6">
             Nutri-Chimp
@@ -425,25 +413,77 @@ const Form = () => {
             </Button>
           </div>
         </div>
-      )}
-
-      {
-        <div className="w-full xl:w-[900px] mt-6 mx-auto" ref={basicOutputRef}>
+      )} */}
+      {apiData && finalOptions && (
+        <div className="mt-[150px] xl:mt-48 mx-auto">
           <Accordion variant="splitted">
-            {Object.entries(data).map(([key, value], index) => (
+            {Object.entries(apiData).map(([key, value], index) => (
               <AccordionItem
                 key={index}
                 aria-label="Accordion 1"
                 title={value.name}
-                subtitle={key[0].toUpperCase() + key.slice(1)}
+                subtitle={
+                  key[0].toUpperCase() +
+                  key.slice(1).split("_")[0] +
+                  " " +
+                  (index + 1)
+                }
                 className="text-gray-400"
               >
-                <InnerAccordianElement data={value} />
+                <Table aria-label="Example static collection table">
+                  <TableHeader>
+                    <TableColumn>Time</TableColumn>
+                    <TableColumn>Meal</TableColumn>
+                  </TableHeader>
+                  <TableBody>
+                    {Object.entries(value).map(([key, val], index) => (
+                      <TableRow key={index}>
+                        <TableCell>
+                          {key[0].toUpperCase() + key.slice(1)}
+                        </TableCell>
+                        <TableCell>
+                          {val[0].toUpperCase() + val.slice(1)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </AccordionItem>
             ))}
           </Accordion>
+
+          <div className="w-full flex flex-col md:flex-row mt-14 gap-5">
+            <Autocomplete
+              label="Select a Meal"
+              placeholder="Search an Meal"
+              className="min-w-xs "
+              value={selectedMeal}
+              onSelectionChange={setSelectedMeal}
+            >
+              {optionsMeals?.map((meal) => (
+                <AutocompleteItem key={meal} value={meal}>
+                  {meal}
+                </AutocompleteItem>
+              ))}
+            </Autocomplete>
+
+            <Button
+              className="w-full max-w-[300px] mx-auto my-auto self-end"
+              color="default"
+              isLoading={isLoading}
+              onClick={getMealPlan}
+            >
+              Generate How to make
+            </Button>
+          </div>
         </div>
-      }
+      )}
+
+      {data.ingredients && (
+        <div className="w-full xl:w-[900px] mt-6 mx-auto" ref={basicOutputRef}>
+          <InnerAccordianElement data={data} />
+        </div>
+      )}
     </div>
   );
 };
