@@ -45,20 +45,20 @@ const Navbar = () => {
 
       {/* <div className="flex  justify-between items-center gap-4 w-full"></div> */}
       <div className="">
-        <button className="bg-[#CBEA7B] px-[16px] py-[12px] rounded-lg text-[14px] text-[#262626] font-semibold mr-[10px]">
+        <button className="bg-[#CBEA7B] px-[10px] py-[8px] sm:px-[16px] sm:py-[12px] rounded-lg text-[10px] sm:text-[14px] text-[#262626] font-semibold mr-[10px]">
           Contact Us
         </button>
         {isAuthenticated ? (
           <button
             onClick={() => logout()}
-            className="bg-[#CBEA7B] px-[16px] py-[12px] rounded-lg text-[14px] text-[#262626] font-semibold"
+            className="bg-[#CBEA7B] px-[10px] py-[8px] sm:px-[16px] sm:py-[12px] rounded-lg text-[10px] sm:text-[14px] text-[#262626] font-semibold mr-[10px]"
           >
             Logout
           </button>
         ) : (
           <button
             onClick={() => loginWithRedirect()}
-            className="bg-[#CBEA7B] px-[16px] py-[12px] rounded-lg text-[14px] text-[#262626] font-semibold"
+            className="bg-[#CBEA7B] px-[10px] py-[8px] sm:px-[16px] sm:py-[12px] rounded-lg text-[10px] sm:text-[14px] text-[#262626] font-semibold mr-[10px]"
           >
             Log In
           </button>
