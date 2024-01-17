@@ -8,7 +8,7 @@ import NewLanding from "./components/NewLanding";
 
 const App = () => {
   return (
-    <div className="dark bg-[#FFFFFF] min-h-screen">
+    <div className="dark bg-[#FFFFFF] min-h-screen min-w-screen">
       <Navbar />
       <div className="pt-10">
         <Routes>

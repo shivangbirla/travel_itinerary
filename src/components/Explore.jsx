@@ -10,10 +10,10 @@ const Explore = () => {
     <>
       <div className="px-[8vw]">
         <div className="mb-[72px]">
-          <h2 className="text-Grey-15 text-center font-Urbanist text-[50px] font-bold leading-150 mb-[8px]">
+          <h2 className="text-Grey-15 text-center font-Urbanist text-3xl lg:text-[50px] font-bold leading-150 mb-[8px]">
             Explore More
           </h2>
-          <p className="text-Grey-20 text-center font-Urbanist text-[20px] font-medium leading-150">
+          <p className="text-Grey-20 text-center font-Urbanist text-base md:text-[20px] font-medium leading-150">
             Eat Well, Live Well: Your Blueprint for Balanced Nutrition
           </p>
         </div>
