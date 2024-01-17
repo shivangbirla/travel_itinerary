@@ -20,8 +20,8 @@ const Navbar = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          _id: user?.user_id,
-          name: user?.username,
+          _id: user?.sub,
+          name: user?.name,
           email: user?.email,
         }),
       });
