@@ -3,7 +3,7 @@ import img1 from "../assets/img1.svg";
 import img2 from "../assets/img2.svg";
 import img3 from "../assets/img3.svg";
 import ExploreComponent from "./ExploreComponent";
-import Landingimg from "../assets/Landing-img.png";
+// import Landingimg from "../assets/Landing-img.png";
 
 const Explore = () => {
   return (

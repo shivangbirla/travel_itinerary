@@ -58,6 +58,51 @@ const Form = () => {
 
   //  const BASE_URL = "https://generative-travel-itinerary.vercel.app";
 
+  const obj = {
+    day_1: {
+      breakfast: "Vegetable Paratha",
+      lunch: "Rajma Chawal",
+      snack: "Cucumber Sandwich",
+      dinner: "Paneer Tikka Masala",
+    },
+    day_2: {
+      breakfast: "Cheese Sandwich",
+      lunch: "Vegetable Biryani",
+      snack: "Fruit Chaat",
+      dinner: "Mushroom Curry with Roti",
+    },
+    day_3: {
+      breakfast: "Idli with Tomato Chutney",
+      lunch: "Dal Makhani with Jeera Rice",
+      snack: "Vegetable Cutlet",
+      dinner: "Mixed Vegetable Curry with Paratha",
+    },
+    day_4: {
+      breakfast: "Poha",
+      lunch: "Palak Paneer with Roti",
+      snack: "Banana Smoothie",
+      dinner: "Chole Bhature",
+    },
+    day_5: {
+      breakfast: "Aloo Paratha with Curd",
+      lunch: "Vegetable Pulao with Raita",
+      snack: "Carrot Sticks with Hummus",
+      dinner: "Mutter Paneer with Naan",
+    },
+    day_6: {
+      breakfast: "Upma",
+      lunch: "Aloo Gobi with Roti",
+      snack: "Mixed Fruit Salad",
+      dinner: "Spinach Dal with Rice",
+    },
+    day_7: {
+      breakfast: "Moong Dal Cheela",
+      lunch: "Kadhi Chawal",
+      snack: "Vegetable Soup",
+      dinner: "Vegetable Masala Dosa",
+    },
+  };
+
   const fetchOptions = async () => {
     try {
       const response = await fetch(`${BASE_URL}/getAllOptions`);
@@ -95,8 +140,8 @@ const Form = () => {
   };
 
   const getMealPlan = async () => {
-    if(!selectedMeal){
-      alert("Please select a meal")
+    if (!selectedMeal) {
+      alert("Please select a meal");
       return;
     }
     setIsLoading(true);
@@ -114,10 +159,7 @@ const Form = () => {
       // eslint-disable-next-line no-constant-condition
       if (response.ok) {
         const resData = await response.json();
-        console.log(
-          "Form submitted successfully:",
-          resData,
-        );
+        console.log("Form submitted successfully:", resData);
 
         const mealPlanString = resData?.meal;
         // const mealPlanString = ""
@@ -237,12 +279,11 @@ const Form = () => {
     }
   };
 
-
   return (
     <div className="container mx-auto p-4 md:p-8">
       <form
         onSubmit={handleFormSubmit}
-        className="flex flex-col gap-3 md:gap-4 border-style w-full xl:w-[800px] mx-auto  bg-slate-700 p-5 xl:p-10 rounded-2xl"
+        className="flex flex-col bg-[#1c8b65] gap-3 md:gap-4 border-style w-full xl:w-[800px] mx-auto   p-5 xl:p-10 rounded-2xl"
       >
         {/* <MultiSelect
           chips={cuisines}
@@ -259,7 +300,7 @@ const Form = () => {
           placeholder={"Search A Primary Cuisines"}
         /> */}
         <Autocomplete
-          label="Search A Primary Cuisines"
+          label="Choose A Primary Cuisines"
           placeholder="Search A Primary Cuisines"
           className="min-w-xs"
           value={cuisines}
@@ -272,7 +313,7 @@ const Form = () => {
           ))}
         </Autocomplete>
         <Autocomplete
-          label="Search A Secondary Cuisines"
+          label="Choose A Secondary Cuisines"
           placeholder="Search A Secondary Cuisines"
           className="min-w-xs"
           value={moreCuisines}
@@ -288,14 +329,14 @@ const Form = () => {
         <MultiSelect
           chips={foodItem}
           setChips={setFoodItem}
-          label={"Search A Food Item to Exclude"}
+          label={"Choose A Food Item to Exclude"}
           options={options?.food_items}
-          placeholder={"Search A Food Item to Exclude"}
+          placeholder={"Choose A Food Item to Exclude"}
         />
 
         <Autocomplete
-          label="Food Type"
-          placeholder="Search an Food Type"
+          label="Taste preference"
+          placeholder="Choose a Taste preference"
           className="min-w-xs"
           value={type}
           onSelectionChange={settype}
@@ -320,8 +361,8 @@ const Form = () => {
           ))}
         </Autocomplete>
         <Autocomplete
-          label="Age"
-          placeholder="Search an Age"
+          label="Age (yrs)"
+          placeholder="Pick an age group"
           className="min-w-xs"
           value={age}
           onSelectionChange={setAge}
@@ -333,8 +374,8 @@ const Form = () => {
           ))}
         </Autocomplete>
         <Autocomplete
-          label="Search for Allergies"
-          placeholder="Search for Allergies"
+          label="Choose for Allergies"
+          placeholder="Choose for Allergies"
           className="min-w-xs"
           value={allergy}
           onSelectionChange={setAllergy}
@@ -357,7 +398,7 @@ const Form = () => {
         <div className="flex items-center justify-center ">
           <button
             type="submit"
-            className="bg-[#1a659e] flex items-center justify-center hover:bg-[#2c7da0] w-full max-w-[700px] text-white py-2.5 px-6 rounded-md focus:bg-[#2c7da0] focus:outline-none text-[16px]  disabled:cursor-none"
+            className="bg-[#39ac23] flex items-center justify-center hover:bg-[#1cb457] w-full max-w-[700px] text-white py-2.5 px-6 rounded-md focus:bg-[#2c7da0] focus:outline-none text-[16px]  disabled:cursor-none"
             onClick={(e) => {
               handleFormSubmit(e);
               setLoading(true);
@@ -414,43 +455,34 @@ const Form = () => {
           </div>
         </div>
       )} */}
+
       {apiData && finalOptions && (
-        <div className="mt-[150px] xl:mt-48 mx-auto">
-          <Accordion variant="splitted">
-            {Object.entries(apiData).map(([key, value], index) => (
-              <AccordionItem
-                key={index}
-                aria-label="Accordion 1"
-                title={value.name}
-                subtitle={
-                  key[0].toUpperCase() +
-                  key.slice(1).split("_")[0] +
-                  " " +
-                  (index + 1)
-                }
-                className="text-gray-400"
-              >
-                <Table aria-label="Example static collection table">
-                  <TableHeader>
-                    <TableColumn>Time</TableColumn>
-                    <TableColumn>Meal</TableColumn>
-                  </TableHeader>
-                  <TableBody>
-                    {Object.entries(value).map(([key, val], index) => (
-                      <TableRow key={index}>
-                        <TableCell>
-                          {key[0].toUpperCase() + key.slice(1)}
-                        </TableCell>
-                        <TableCell>
-                          {val[0].toUpperCase() + val.slice(1)}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </AccordionItem>
-            ))}
-          </Accordion>
+        <div className="mt-[150px] w-full xl:w-[900px] xl:mt-48 mx-auto">
+          <Table aria-label="Example static collection table">
+            <TableHeader>
+              <TableColumn>Day</TableColumn>
+              <TableColumn>Breakfast</TableColumn>
+              <TableColumn>Lunch</TableColumn>
+              <TableColumn>Snack</TableColumn>
+              <TableColumn>Dinner</TableColumn>
+            </TableHeader>
+            <TableBody>
+              {Object.entries(apiData).map(([key, val], index) => (
+                <TableRow key={index} className="text-white">
+                  <TableCell>
+                    {key[0].toUpperCase() +
+                      key.slice(1).split("_")[0] +
+                      " " +
+                      (index + 1)}
+                  </TableCell>
+                  <TableCell>{val.breakfast}</TableCell>
+                  <TableCell>{val.lunch}</TableCell>
+                  <TableCell>{val.snack}</TableCell>
+                  <TableCell>{val.dinner}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
 
           <div className="w-full flex flex-col md:flex-row mt-14 gap-5">
             <Autocomplete

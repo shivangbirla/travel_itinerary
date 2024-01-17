@@ -1,7 +1,10 @@
 import React from "react";
 import starter from "../assets/starter.svg";
+import { useNavigate } from "react-router-dom";
+
 
 const Starter = () => {
+  const navigate = useNavigate()
   return (
     <>
       <div className="flex flex-row mt-8 gap-[5vw] mb-[20vh]">
@@ -22,7 +25,9 @@ const Starter = () => {
               taste profiles.
             </div>
           </div>
-          <button className="bg-[#CBEA7B] px-[30px] py-[24px] rounded-lg text-[24px] text-[#262626] font-semibold">
+          <button className="bg-[#CBEA7B] px-[30px] py-[24px] rounded-lg text-[24px] text-[#262626] font-semibold" onClick={()=>{
+            navigate('/home')
+          }}>
             Get Starter Today
           </button>
         </div>

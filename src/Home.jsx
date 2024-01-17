@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar";
 const Home = () => {
   return (
     <>
-      <div className="bg-[#111827] min-h-screen">
+      <div className="bg-[#FAFDF2] min-h-screen">
         {/* <Navbar /> */}
         <Hero />
         <Form />

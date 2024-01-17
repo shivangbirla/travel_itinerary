@@ -17,10 +17,10 @@ const InnerAccordianElement = ({ data }) => {
   console.log("data", data);
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 w-full">
       {data?.ingredients ? (
         <>
-          <Card className="p-4 flex flex-col gap-4">
+          <Card className="p-4 flex flex-col gap-4 w-full">
             <Table
               isStriped
               removeWrapper
