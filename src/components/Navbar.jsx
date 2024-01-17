@@ -5,9 +5,9 @@ import Logo from "../assets/logo.jpg";
 const Navbar = () => {
   // const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
   return (
-    <nav className="fixed top-0 w-full flex justify-between px-5 md:px-20 py-3  items-center z-50  shadow-md shadow-gray-950 backnavdrop ">
+    <nav className="fixed top-0 w-full flex justify-between px-5 md:px-20 py-3  items-center z-50  shadow-md shadow-gray-950 backnavdrop bg-[#1A3129]">
       <div className="flex items-center gap-4 text-white font-semibold text-lg ">
-        <img src={Logo} alt="logo" className="w-10 rounded-lg" />
+        <img src={Logo} alt="logo" className="w-10 rounded-full" />
         <h1 className="text-white hover:text-gray-300">Hypothetica</h1>
       </div>
       {/* {isAuthenticated ? (
@@ -22,6 +22,11 @@ const Navbar = () => {
       {/* <div className="flex  justify-between items-center gap-4 w-full">
           
         </div> */}
+      <div>
+        <button className="bg-[#CBEA7B] px-[16px] py-[12px] rounded-lg text-[14px] text-[#262626] font-semibold">
+          Contact Us
+        </button>
+      </div>
     </nav>
   );
 };

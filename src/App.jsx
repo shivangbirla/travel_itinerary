@@ -4,14 +4,15 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import Landing from "./components/Landing";
 import Navbar from "./components/Navbar";
+import NewLanding from "./components/NewLanding";
 
 const App = () => {
   return (
-    <div className="dark bg-[#111827] min-h-screen">
+    <div className="dark bg-[#FFFFFF] min-h-screen">
       <Navbar />
       <div className="pt-10">
         <Routes>
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<NewLanding />} />
           <Route path="/home" element={<Home />} />
         </Routes>
       </div>
