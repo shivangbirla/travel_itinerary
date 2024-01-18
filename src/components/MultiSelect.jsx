@@ -106,7 +106,7 @@ const MultiSelect = ({ chips, setChips, label, options = [], placeholder }) => {
               {popupOptions?.map((option, index) => (
                 <div
                   className={`flex flex-col justify-center text-gray-700 px-2 ${
-                    highlightedIndex === index ? "bg-gray-700  rounded-md" : "" // Add a background color or any styling for the highlighted option
+                    highlightedIndex === index ? "bg-gray-300  rounded-md" : "" // Add a background color or any styling for the highlighted option
                   }`}
                   key={option}
                   onClick={() => {
