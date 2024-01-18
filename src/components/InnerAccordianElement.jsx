@@ -45,9 +45,9 @@ const InnerAccordianElement = ({ data }) => {
             <h2 className="text-white text-2xl font-semibold mt-4">
               Instructions:
             </h2>
-            <ol>
+            <ol className="flex flex-col gap-1">
               {data?.instructions.map((instruction, index) => (
-                <li key={index} className="text-gray-300">
+                <li key={index} className="text-gray-700">
                   {instruction}
                 </li>
               ))}

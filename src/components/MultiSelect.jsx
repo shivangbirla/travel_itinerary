@@ -105,7 +105,7 @@ const MultiSelect = ({ chips, setChips, label, options = [], placeholder }) => {
             <div className="px-1 py-2 overflow-scroll max-h-[300px] flex flex-col">
               {popupOptions?.map((option, index) => (
                 <div
-                  className={`flex flex-col justify-center text-white px-2 ${
+                  className={`flex flex-col justify-center text-gray-700 px-2 ${
                     highlightedIndex === index ? "bg-gray-700  rounded-md" : "" // Add a background color or any styling for the highlighted option
                   }`}
                   key={option}
@@ -118,7 +118,7 @@ const MultiSelect = ({ chips, setChips, label, options = [], placeholder }) => {
                 </div>
               ))}
               {popupOptions?.length === 0 && (
-                <div className="flex flex-col justify-center text-white">
+                <div className="flex flex-col justify-center text-gray-700">
                   No Results Found
                 </div>
               )}

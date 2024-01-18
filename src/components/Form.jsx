@@ -302,7 +302,8 @@ const Form = () => {
         <Autocomplete
           label="Choose A Primary Cuisines"
           placeholder="Search A Primary Cuisines"
-          className="min-w-xs"
+          className="min-w-xs "
+          // color="white"
           value={cuisines}
           onSelectionChange={setCuisines}
         >
@@ -398,7 +399,7 @@ const Form = () => {
         <div className="flex items-center justify-center ">
           <button
             type="submit"
-            className="bg-[#39ac23] flex items-center justify-center hover:bg-[#1cb457] w-full max-w-[700px] text-white py-2.5 px-6 rounded-md focus:bg-[#2c7da0] focus:outline-none text-[16px]  disabled:cursor-none"
+            className="bg-[#39ac23] flex items-center justify-center hover:bg-[#1cb457] w-full max-w-[700px] text-white py-2.5 px-6 rounded-md focus:bg-[#2c7da0] focus:outline-none text-[16px]   disabled:cursor-none"
             onClick={(e) => {
               handleFormSubmit(e);
               setLoading(true);
@@ -468,7 +469,7 @@ const Form = () => {
             </TableHeader>
             <TableBody>
               {Object.entries(apiData).map(([key, val], index) => (
-                <TableRow key={index} className="text-white">
+                <TableRow key={index} className="text-gray-700">
                   <TableCell>
                     {key[0].toUpperCase() +
                       key.slice(1).split("_")[0] +
