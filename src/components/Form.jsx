@@ -58,50 +58,7 @@ const Form = () => {
 
   //  const BASE_URL = "https://generative-travel-itinerary.vercel.app";
 
-  const obj = {
-    day_1: {
-      breakfast: "Vegetable Paratha",
-      lunch: "Rajma Chawal",
-      snack: "Cucumber Sandwich",
-      dinner: "Paneer Tikka Masala",
-    },
-    day_2: {
-      breakfast: "Cheese Sandwich",
-      lunch: "Vegetable Biryani",
-      snack: "Fruit Chaat",
-      dinner: "Mushroom Curry with Roti",
-    },
-    day_3: {
-      breakfast: "Idli with Tomato Chutney",
-      lunch: "Dal Makhani with Jeera Rice",
-      snack: "Vegetable Cutlet",
-      dinner: "Mixed Vegetable Curry with Paratha",
-    },
-    day_4: {
-      breakfast: "Poha",
-      lunch: "Palak Paneer with Roti",
-      snack: "Banana Smoothie",
-      dinner: "Chole Bhature",
-    },
-    day_5: {
-      breakfast: "Aloo Paratha with Curd",
-      lunch: "Vegetable Pulao with Raita",
-      snack: "Carrot Sticks with Hummus",
-      dinner: "Mutter Paneer with Naan",
-    },
-    day_6: {
-      breakfast: "Upma",
-      lunch: "Aloo Gobi with Roti",
-      snack: "Mixed Fruit Salad",
-      dinner: "Spinach Dal with Rice",
-    },
-    day_7: {
-      breakfast: "Moong Dal Cheela",
-      lunch: "Kadhi Chawal",
-      snack: "Vegetable Soup",
-      dinner: "Vegetable Masala Dosa",
-    },
-  };
+
 
   const fetchOptions = async () => {
     try {
@@ -461,7 +418,7 @@ const Form = () => {
         <div className="mt-[150px] w-full xl:w-[900px] xl:mt-48 mx-auto">
           <Table aria-label="Example static collection table">
             <TableHeader>
-              <TableColumn>Day</TableColumn>
+              <TableColumn className="min-w-[70px]">Day</TableColumn>
               <TableColumn>Breakfast</TableColumn>
               <TableColumn>Lunch</TableColumn>
               <TableColumn>Snack</TableColumn>

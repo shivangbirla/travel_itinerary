@@ -84,7 +84,7 @@ const MultiSelect = ({ chips, setChips, label, options = [], placeholder }) => {
 
         <input
           type="text"
-          className="bg-inherit relative outline-none border-none ring-none w-fit min-w-[150px] placeholder:text-foreground-500 text-foreground-600 font-normal text-small"
+          className="bg-inherit relative outline-none border-none ring-none w-fit min-w-[200px] placeholder:text-foreground-500 text-foreground-600 font-normal text-small"
           placeholder={placeholder ?? "Search "}
           value={search}
           onChange={(e) => {
