@@ -3,6 +3,7 @@ import Logo from "../assets/logo.jpg";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "./Form";
 
 const Navbar = () => {
   const { loginWithRedirect, isAuthenticated, logout, user } = useAuth0();
@@ -16,7 +17,7 @@ const Navbar = () => {
 
   const sendUserData = async () => {
     try {
-      const response = await fetch("http://localhost:8000/user_data", {
+      const response = await fetch(`${BASE_URL}/user_data`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
