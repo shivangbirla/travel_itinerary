@@ -60,6 +60,7 @@ const Form = () => {
 
 
   //  const BASE_URL = "https://generative-travel-itinerary.vercel.app";
+  console.log("isAuthenticated",isAuthenticated)
 
 
 
