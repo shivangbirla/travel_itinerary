@@ -54,7 +54,7 @@ const Form = () => {
 
   const basicOutputRef = useRef(null);
 
-  const BASE_URL = "https://api.nutrichimp.zencoresolutions.co/";
+  const BASE_URL = "https://api.nutrichimp.zencoresolutions.co";
 
   //  const BASE_URL = "https://generative-travel-itinerary.vercel.app";
 
