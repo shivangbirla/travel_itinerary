@@ -152,6 +152,7 @@ const Form = () => {
     e.preventDefault();
     console.log("not authenticated",isAuthenticated)
     if(!isAuthenticated){
+      setLoading(false);
       loginWithRedirect();
       return;
     }
