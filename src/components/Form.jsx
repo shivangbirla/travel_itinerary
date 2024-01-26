@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import {
   Accordion,
   AccordionItem,
@@ -32,7 +33,7 @@ import {
 export const   BASE_URL = "https://api.nutrichimp.zencoresolutions.co";
 
 const Form = () => {
-  // const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
+  const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
   const [apiData, setApiData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [optionsMeals, setOptionsMeals] = useState([]);
@@ -148,10 +149,10 @@ const Form = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // if(!isAuthenticated){
-    //   loginWithRedirect();
-    //   return;
-    // }
+    if(!isAuthenticated){
+      loginWithRedirect();
+      return;
+    }
 
     const requestBody = {
       primary_cuisine: cuisines,
