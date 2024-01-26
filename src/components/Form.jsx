@@ -149,6 +149,7 @@ const Form = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    console.log("not authenticated",isAuthenticated)
     if(!isAuthenticated){
       loginWithRedirect();
       return;
@@ -292,7 +293,7 @@ const Form = () => {
           setChips={setFoodItem}
           label={"Choose A Food Item to Exclude"}
           options={options?.food_items}
-          placeholder={"Choose A Food Item to Exclude"}
+          placeholder={"Choose A Food Item"}
         />
 
         <Autocomplete
