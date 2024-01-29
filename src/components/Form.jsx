@@ -30,7 +30,7 @@ import {
   TableCell,
 } from "@nextui-org/react";
 
-export const   BASE_URL = "https://api.nutrichimp.zencoresolutions.co";
+export const BASE_URL = "https://api.nutrichimp.zencoresolutions.co";
 
 const Form = () => {
   const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
@@ -56,13 +56,10 @@ const Form = () => {
   const [selectedMeal, setSelectedMeal] = useState("");
 
   const basicOutputRef = useRef(null);
-
-
+  const basicOutputRef2 = useRef(null);
 
   //  const BASE_URL = "https://generative-travel-itinerary.vercel.app";
-  console.log("isAuthenticated",isAuthenticated)
-
-
+  console.log("isAuthenticated", isAuthenticated);
 
   const fetchOptions = async () => {
     try {
@@ -150,12 +147,12 @@ const Form = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("not authenticated",isAuthenticated)
-    if(!isAuthenticated){
-      setLoading(false);
-      loginWithRedirect();
-      return;
-    }
+    console.log("not authenticated", isAuthenticated);
+    // if (!isAuthenticated) {
+    //   setLoading(false);
+    //   loginWithRedirect();
+    //   return;
+    // }
 
     const requestBody = {
       primary_cuisine: cuisines,
@@ -211,7 +208,7 @@ const Form = () => {
         setApiData(ob);
         setFinalOptions(requestBody);
 
-        scrollToBasicOutput();
+        // scrollToBasicOutput();
       } else {
         // throw new Error(`Error: ${await response.text()}`);
       }
@@ -228,6 +225,22 @@ const Form = () => {
       basicOutputRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+  const scrollToBasicOutput2 = () => {
+    // Check if basicOutputRef exists
+    if (basicOutputRef2.current) {
+      basicOutputRef2.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+  useEffect(()=>{
+    setTimeout(() => {
+      scrollToBasicOutput()
+    }, (10));
+  },[apiData])
+  useEffect(()=>{
+    setTimeout(() => {
+      scrollToBasicOutput2()
+    }, (10));
+  },[data])
   // className="border-style w-[800px] mx-auto bg-white p-10 rounded-2xl shadow-lg"
 
   const handleChipClose = (indexToRemove) => {
@@ -263,12 +276,15 @@ const Form = () => {
           placeholder={"Search A Primary Cuisines"}
         /> */}
         <Autocomplete
-          label="Choose A Primary Cuisines"
-          placeholder="Search A Primary Cuisines"
+          label="Choose A Primary Cuisine"
+          placeholder="Search A Primary Cuisine"
           className="min-w-xs "
           // color="white"
           value={cuisines}
           onSelectionChange={setCuisines}
+          scrollShadowProps={{
+            hideScrollBar: false,
+          }}
         >
           {options?.cuisines?.map((countryy) => (
             <AutocompleteItem key={countryy} value={countryy}>
@@ -277,11 +293,14 @@ const Form = () => {
           ))}
         </Autocomplete>
         <Autocomplete
-          label="Choose A Secondary Cuisines"
-          placeholder="Search A Secondary Cuisines"
+          label="Choose A Secondary Cuisine"
+          placeholder="Search A Secondary Cuisine"
           className="min-w-xs"
           value={moreCuisines}
           onSelectionChange={setMoreCuisines}
+          scrollShadowProps={{
+            hideScrollBar: false,
+          }}
         >
           {options?.cuisines?.map((countryy) => (
             <AutocompleteItem key={countryy} value={countryy}>
@@ -296,6 +315,9 @@ const Form = () => {
           label={"Choose A Food Item to Exclude"}
           options={options?.food_items}
           placeholder={"Choose A Food Item"}
+          scrollShadowProps={{
+            hideScrollBar: false,
+          }}
         />
 
         <Autocomplete
@@ -304,6 +326,9 @@ const Form = () => {
           className="min-w-xs"
           value={type}
           onSelectionChange={settype}
+          scrollShadowProps={{
+            hideScrollBar: false,
+          }}
         >
           {options?.food_types?.map((countryy) => (
             <AutocompleteItem key={countryy} value={countryy}>
@@ -317,6 +342,9 @@ const Form = () => {
           className="min-w-xs"
           value={veg}
           onSelectionChange={setVeg}
+          scrollShadowProps={{
+            hideScrollBar: false,
+          }}
         >
           {options?.vegetarian?.map((countryy) => (
             <AutocompleteItem key={countryy} value={countryy}>
@@ -330,6 +358,9 @@ const Form = () => {
           className="min-w-xs"
           value={age}
           onSelectionChange={setAge}
+          scrollShadowProps={{
+            hideScrollBar: false,
+          }}
         >
           {options?.age?.map((countryy) => (
             <AutocompleteItem key={countryy} value={countryy}>
@@ -343,6 +374,9 @@ const Form = () => {
           className="min-w-xs"
           value={allergy}
           onSelectionChange={setAllergy}
+          scrollShadowProps={{
+            hideScrollBar: false,
+          }}
         >
           {options?.allergies?.map((countryy) => (
             <AutocompleteItem key={countryy} value={countryy}>
@@ -421,7 +455,10 @@ const Form = () => {
       )} */}
 
       {apiData && finalOptions && (
-        <div className="mt-[150px] w-full xl:w-[900px] xl:mt-48 mx-auto">
+        <div
+          className="mt-[150px] w-full xl:w-[900px] xl:mt-48 mx-auto"
+          ref={basicOutputRef}
+        >
           <Table aria-label="Example static collection table">
             <TableHeader>
               <TableColumn className="min-w-[70px]">Day</TableColumn>
@@ -451,10 +488,13 @@ const Form = () => {
           <div className="w-full flex flex-col md:flex-row mt-14 gap-5">
             <Autocomplete
               label="Select a Meal"
-              placeholder="Search an Meal"
+              placeholder="Select a Meal"
               className="min-w-xs "
               value={selectedMeal}
               onSelectionChange={setSelectedMeal}
+              scrollShadowProps={{
+                hideScrollBar: false,
+              }}
             >
               {optionsMeals?.map((meal) => (
                 <AutocompleteItem key={meal} value={meal}>
@@ -469,14 +509,14 @@ const Form = () => {
               isLoading={isLoading}
               onClick={getMealPlan}
             >
-              Generate How to make
+              Click for Recipe & Ingredients
             </Button>
           </div>
         </div>
       )}
 
       {data.ingredients && (
-        <div className="w-full xl:w-[900px] mt-6 mx-auto" ref={basicOutputRef}>
+        <div className="w-full xl:w-[900px] mt-6 mx-auto" ref={basicOutputRef2}>
           <InnerAccordianElement data={data} />
         </div>
       )}

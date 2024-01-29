@@ -11,7 +11,7 @@ const Explore = () => {
       <div className="px-[8vw]">
         <div className="mb-[72px]">
           <h2 className="text-Grey-15 text-center font-Urbanist text-3xl lg:text-[50px] font-bold leading-150 mb-[8px]">
-            Explore More
+            Balanced & Tasty Meals
           </h2>
           <p className="text-Grey-20 text-center font-Urbanist text-base md:text-[20px] font-medium leading-150">
             Eat Well, Live Well: Your Blueprint for Balanced Nutrition
@@ -21,19 +21,22 @@ const Explore = () => {
           <ExploreComponent
             imageSrc={img1}
             title="Meal Plan"
-            description="A meal plan is like a yummy schedule for your tummy! It's a special plan that helps decide what tasty foods you get to eat during the day or week. It's not just about making sure your meals are super delicious, but also making sure you eat the right amount of food at the right times. This helps keep you strong, happy, and healthy!"
+            description="7-day custom plan that is not only tasty but is created considering Govt nutrition guidelines for kids
+"
             reverse={false}
           />
           <ExploreComponent
             imageSrc={img2}
             title="Recipe"
-            description="A recipe is like a magical spell for making yummy food! It's a special set of instructions that tells you exactly what ingredients to use and the fun steps to follow to create a delicious dish. Recipes are like treasure maps that help you make the best snacks and meals ever!"
+            description="Learn how to make any dish in the meal plan with just a click
+"
             reverse={true}
           />
           <ExploreComponent
             imageSrc={img3}
             title="Ingredients"
-            description="Ingredients are like the super cool stuff you use to make your favorite foods! They're the special things you mix and cook to create the tasty meals you love. Imagine you're a food explorer, and ingredients are your treasure hunt items!"
+            description="Quickly build your shopping list for the Meal Plan
+"
             reverse={false}
           />
         </div>

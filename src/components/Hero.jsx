@@ -3,12 +3,12 @@ import React from "react";
 const Hero = () => {
   return (
     <>
-      <div className="bg-inherit flex flex-col gap-10  px-5 text-center  items-center justify-center pt-20 xl:pt-28 pb-10">
-        <h1 className=" text-[#276b53]  font-bold text-5xl  xl:text-8xl">
-          Nutri-Chimp
+      <div className="bg-inherit flex flex-col gap-4  px-5 text-center  items-center justify-center pt-20 xl:pt-28 ">
+        <h1 className=" text-[#276b53]  font-bold text-4xl  xl:text-8xl">
+          NutriChimp
         </h1>
         <span className="text-blacktext-lg text-center overflow-hidden mt-4">
-          Generate a meal plan using the given details.
+          Share child’s food preferences to create a custom meal plan
         </span>
       </div>
     </>
