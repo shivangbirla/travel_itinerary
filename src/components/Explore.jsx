@@ -9,7 +9,7 @@ const Explore = () => {
   return (
     <>
       <div className="px-[8vw]">
-        <div className="mb-[72px]">
+        <div className=" mt-20 mb-[72px]">
           <h2 className="text-Grey-15 text-center font-Urbanist text-3xl lg:text-[50px] font-bold leading-150 mb-[8px]">
             Balanced & Tasty Meals
           </h2>
