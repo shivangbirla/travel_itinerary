@@ -4,18 +4,21 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "./Form";
+import { SignIn, useUser, SignOutButton, useSession } from "@clerk/clerk-react";
 
 const Navbar = () => {
-  const { loginWithRedirect, isAuthenticated, logout, user } = useAuth0();
+  const { isSignedIn, user } = useUser();
   const navigate = useNavigate();
   console.log(user);
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isSignedIn) {
       sendUserData();
+      // console.log(user,user.fullName,user.emailAddresses[0].emailAddress,)
     }
-  }, [isAuthenticated, user]);
+  }, [isSignedIn, user]);
 
   const sendUserData = async () => {
+    console.log("called")
     try {
       const response = await fetch(`${BASE_URL}/user_data`, {
         method: "POST",
@@ -23,9 +26,9 @@ const Navbar = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          _id: user?.sub,
-          name: user?.name,
-          email: user?.email,
+          _id: user?.id,
+          name: user?.fullName,
+          email: user?.emailAddresses[0].emailAddress,
         }),
       });
 
@@ -54,16 +57,13 @@ const Navbar = () => {
         {/* <button className="bg-[#CBEA7B] px-[10px] py-[8px] sm:px-[16px] sm:py-[12px] rounded-lg text-[10px] sm:text-[14px] text-[#262626] font-semibold mr-[10px]">
           Contact Us
         </button> */}
-        {isAuthenticated ? (
-          <button
-            onClick={() => logout()}
-            className="bg-[#CBEA7B] px-[10px] py-[8px] sm:px-[16px] sm:py-[12px] rounded-lg text-[10px] sm:text-[14px] text-[#262626] font-semibold mr-[10px]"
-          >
+        {isSignedIn ? (
+          <SignOutButton className="bg-[#CBEA7B] px-[10px] py-[8px] sm:px-[16px] sm:py-[12px] rounded-lg text-[10px] sm:text-[14px] text-[#262626] font-semibold mr-[10px]">
             Logout
-          </button>
+          </SignOutButton>
         ) : (
           <button
-            onClick={() => loginWithRedirect()}
+            onClick={() => navigate("/login")}
             className="bg-[#CBEA7B] px-[10px] py-[8px] sm:px-[16px] sm:py-[12px] rounded-lg text-[10px] sm:text-[14px] text-[#262626] font-semibold mr-[10px]"
           >
             Log In

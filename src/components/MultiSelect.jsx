@@ -102,7 +102,7 @@ const MultiSelect = ({ chips, setChips, label, options = [], placeholder }) => {
             className={`${search===""&&"hidden"} absolute left-0 w-full z-50 bg-content1 px-2.5 py-1 rounded-lg  transition-all   !duration-1000 delay-300 outline-none`}
             ref={ref2}
           >
-            <div className="px-1 py-2 overflow-scroll max-h-[300px] flex flex-col">
+            <div className="px-1 py-2 overflow-y-scroll scrollbar-thin max-h-[300px] flex flex-col">
               {popupOptions?.map((option, index) => (
                 <div
                   className={`flex flex-col justify-center text-gray-700 px-2 ${

@@ -29,11 +29,13 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/react";
+import { useUser } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
 
 export const BASE_URL = "https://api.nutrichimp.zencoresolutions.co";
 
 const Form = () => {
-  const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
+    const { isSignedIn,user ,} = useUser();
   const [apiData, setApiData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [optionsMeals, setOptionsMeals] = useState([]);
@@ -54,12 +56,12 @@ const Form = () => {
   const [finalOptions, setFinalOptions] = useState();
   const [data, setData] = useState({});
   const [selectedMeal, setSelectedMeal] = useState("");
+  const navigate = useNavigate()
 
   const basicOutputRef = useRef(null);
   const basicOutputRef2 = useRef(null);
 
   //  const BASE_URL = "https://generative-travel-itinerary.vercel.app";
-  console.log("isAuthenticated", isAuthenticated);
 
   const fetchOptions = async () => {
     try {
@@ -147,12 +149,11 @@ const Form = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("not authenticated", isAuthenticated);
-    // if (!isAuthenticated) {
-    //   setLoading(false);
-    //   loginWithRedirect();
-    //   return;
-    // }
+    if (!isSignedIn) {
+      setLoading(false);
+      navigate("/login")
+      return;
+    }
 
     const requestBody = {
       primary_cuisine: cuisines,
@@ -456,9 +457,10 @@ const Form = () => {
 
       {apiData && finalOptions && (
         <div
-          className="mt-[150px] w-full xl:w-[900px] xl:mt-48 mx-auto"
-          ref={basicOutputRef}
+        className="mt-[150px] w-full xl:w-[900px] xl:mt-36 mx-auto"
+        ref={basicOutputRef}
         >
+        <h1 className="text-center mb-10 text-[#276b53] text-5xl font-semibold">7-Day Meal Plan</h1>
           <Table aria-label="Example static collection table">
             <TableHeader>
               <TableColumn className="min-w-[70px]">Day</TableColumn>
