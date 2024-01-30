@@ -8,12 +8,10 @@
     margin: 0;
     padding: 0;
     font-family: "Poppins", sans-serif;
-    @apply !scrollbar-thin !scrollbar-corner-transparent ;
   }
   ::-webkit-scrollbar-button {
-    display:none !important;
+    display: none !important;
   }
-
 
   .border-style {
     border: 2px solid #1c8b65; /* Green border */
@@ -22,13 +20,20 @@
       20px
     ); /* Increased blur for a more pronounced effect */
   }
- 
+  .radio .text-foreground-500{
+    @apply !text-white font-semibold;
+    
+  }
+  .radio .text-foreground{
+    @apply !text-white font-medium;
+
+  }
 
 
-.backnavdrop {
-  backdrop-filter: blur(100px);
-  perspective: 1000;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
+  .backnavdrop {
+    backdrop-filter: blur(100px);
+    perspective: 1000;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
 }

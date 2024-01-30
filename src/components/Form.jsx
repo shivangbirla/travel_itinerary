@@ -17,6 +17,7 @@ import {
 import fs from "fs";
 // import BasicOutput from "./BasicOutput";
 import data from "../data/data";
+import svg from "../assets/data.png"
 import { Input } from "@nextui-org/react";
 import MultiSelect from "./MultiSelect";
 // import { useAuth0 } from "@auth0/auth0-react";
@@ -31,11 +32,21 @@ import {
 } from "@nextui-org/react";
 import { useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
+import { RadioGroup, Radio } from "@nextui-org/react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+} from "@nextui-org/react";
+
 
 export const BASE_URL = "https://api.nutrichimp.zencoresolutions.co";
 
 const Form = () => {
-    const { isSignedIn,user ,} = useUser();
+    const { isSignedIn, user, isLoaded } = useUser();
   const [apiData, setApiData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [optionsMeals, setOptionsMeals] = useState([]);
@@ -57,11 +68,14 @@ const Form = () => {
   const [data, setData] = useState({});
   const [selectedMeal, setSelectedMeal] = useState("");
   const navigate = useNavigate()
-
+  const [gender, setGender] = useState()
+  const [allertyInput, setAllertyInput] = useState("")
   const basicOutputRef = useRef(null);
   const basicOutputRef2 = useRef(null);
+  const { isOpen, onOpen, onOpenChange,onClose } = useDisclosure();
 
-  //  const BASE_URL = "https://generative-travel-itinerary.vercel.app";
+
+
 
   const fetchOptions = async () => {
     try {
@@ -81,6 +95,14 @@ const Form = () => {
   useEffect(() => {
     fetchOptions();
   }, []);
+
+  useEffect(() => {
+    if (isLoaded) {
+      if (!isSignedIn) {
+        navigate("/login")
+      }
+    }
+  }, [isLoaded]);
 
   const handleKeyDown = (event) => {
     // event.preventDefault();
@@ -154,15 +176,19 @@ const Form = () => {
       navigate("/login")
       return;
     }
+    onOpen();
+
 
     const requestBody = {
       primary_cuisine: cuisines,
-      other_cuisines: [moreCuisines],
+      secondary_cuisine: [moreCuisines],
       vegetarian: veg,
       food_items_to_exclude: foodItem,
       preferred_food_type: [type],
-      allergies: [allergy],
+      allergies: [allergy==="Others"?allertyInput:allergy],
       age,
+      gender:gender==="girl"?"female":"male",
+
     };
 
     try {
@@ -217,6 +243,7 @@ const Form = () => {
       console.error("Error submitting form:", error.message);
     } finally {
       setLoading(false);
+      onClose()
     }
   };
 
@@ -258,6 +285,29 @@ const Form = () => {
 
   return (
     <div className="container mx-auto p-4 md:p-8">
+      <Modal
+        isOpen={isOpen}
+        size={"lg"}
+        onOpenChange={onOpenChange}
+        hideCloseButton
+        className="!bg-[#FBFDF2] px-5 p-10"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody className="flex flex-col gap-10">
+                <img src={svg} alt="" className="w-full h-full" />
+                <h1 className="text-[#1D8B65] text-center font-bold text-3xl">
+                  Generating...
+                </h1>
+                <p className="text-black">
+                  Please wait, while we create your meal plan.
+                </p>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
       <form
         onSubmit={handleFormSubmit}
         className="flex flex-col bg-[#1c8b65] gap-3 md:gap-4 border-style w-full xl:w-[800px] mx-auto   p-5 xl:p-10 rounded-2xl"
@@ -385,16 +435,33 @@ const Form = () => {
             </AutocompleteItem>
           ))}
         </Autocomplete>
+        {allergy === "Others" && (
+          <Input
+            type="text"
+            label="Other Allergy"
+            defaultValue=""
+            className="w-full"
+            value={allertyInput}
+            onValueChange={setAllertyInput}
+          />
+        )}
 
-        {/* <MultiSelect
-          chips={allergy}
-          setChips={setAllergy}
-          label={"Search for Allergies "}
-          options={options?.allergies}
-          placeholder={"Search for Allergies"}
-        /> */}
+        <RadioGroup
+          label="Gender:"
+          orientation="horizontal"
+          value={gender}
+          onValueChange={setGender}
+          className="radio mt-2 !ml-2 !flex !flex-row"
+        >
+          <Radio value="girl" color="success" className="!text-white">
+            Girl
+          </Radio>
+          <Radio value="boy" color="success">
+            Boy
+          </Radio>
+        </RadioGroup>
 
-        <div className="flex items-center justify-center ">
+        <div className="flex items-center justify-center mt-2">
           <button
             type="submit"
             className="bg-[#39ac23] flex items-center justify-center hover:bg-[#1cb457] w-full max-w-[700px] text-white py-2.5 px-6 rounded-md focus:bg-[#2c7da0] focus:outline-none text-[16px]   disabled:cursor-none"
@@ -457,10 +524,12 @@ const Form = () => {
 
       {apiData && finalOptions && (
         <div
-        className="mt-[150px] w-full xl:w-[900px] xl:mt-36 mx-auto"
-        ref={basicOutputRef}
+          className="mt-[150px] w-full xl:w-[900px] xl:mt-36 mx-auto"
+          ref={basicOutputRef}
         >
-        <h1 className="text-center mb-10 text-[#276b53] text-5xl font-semibold">7-Day Meal Plan</h1>
+          <h1 className="text-center mb-10 text-[#276b53] text-5xl font-semibold">
+            7-Day Meal Plan
+          </h1>
           <Table aria-label="Example static collection table">
             <TableHeader>
               <TableColumn className="min-w-[70px]">Day</TableColumn>
