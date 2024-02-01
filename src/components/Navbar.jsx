@@ -2,9 +2,10 @@ import React, { use } from "react";
 import Logo from "../assets/logo.jpg";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "./Form";
 import { SignIn, useUser, SignOutButton, useSession } from "@clerk/clerk-react";
+import { HashLink } from "react-router-hash-link";
 
 const Navbar = () => {
   const { isSignedIn, user } = useUser();
@@ -18,7 +19,7 @@ const Navbar = () => {
   }, [isSignedIn, user]);
 
   const sendUserData = async () => {
-    console.log("called")
+    console.log("called");
     try {
       const response = await fetch(`${BASE_URL}/user_data`, {
         method: "POST",
@@ -53,10 +54,19 @@ const Navbar = () => {
       </div>
 
       {/* <div className="flex  justify-between items-center gap-4 w-full"></div> */}
-      <div className="">
+      <div className="flex justify-end gap-4">
         {/* <button className="bg-[#CBEA7B] px-[10px] py-[8px] sm:px-[16px] sm:py-[12px] rounded-lg text-[10px] sm:text-[14px] text-[#262626] font-semibold mr-[10px]">
           Contact Us
         </button> */}
+
+        <HashLink
+          to="/#faq"
+          className="bg-[#CBEA7B] scroll-smooth px-[10px] py-[8px] sm:px-[16px] sm:py-[12px] rounded-lg text-[10px] sm:text-[14px] text-[#262626] font-semibold mr-[10px]"
+          smooth
+        >
+          FaQ
+        </HashLink>
+
         {isSignedIn ? (
           <SignOutButton className="bg-[#CBEA7B] px-[10px] py-[8px] sm:px-[16px] sm:py-[12px] rounded-lg text-[10px] sm:text-[14px] text-[#262626] font-semibold mr-[10px]">
             Logout

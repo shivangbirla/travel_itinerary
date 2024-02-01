@@ -37,7 +37,9 @@ const NewLanding = () => {
     <div className="w-full flex flex-col gap-4">
       <Starter />
       <Explore />
-      <h4 className="font-bold text-5xl text-center">FAQs</h4>
+      <h4 id="faq" name="faq" className="font-bold text-5xl text-center">
+        FAQs
+      </h4>
       <Card className="py-4 mb-10 w-full max-w-[1280px] mx-auto !bg-[#F6FBE9]">
         <CardBody className="overflow-visible py-2">
           <Accordion hideIndicator>
