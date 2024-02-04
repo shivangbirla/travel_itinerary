@@ -41,6 +41,8 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/react";
+import { toHaveStyle } from "@testing-library/jest-dom/matchers";
+import { toast } from "sonner";
 
 
 export const BASE_URL = "https://api.nutrichimp.zencoresolutions.co";
@@ -56,10 +58,10 @@ const Form = () => {
   const [tripPreferences, setTripPreferences] = useState("");
   const [options, setOptions] = useState([]);
   const [cuisines, setCuisines] = useState([]);
-  const [moreCuisines, setMoreCuisines] = useState([]);
+  const [moreCuisines, setMoreCuisines] = useState("");
   const [age, setAge] = useState();
   const [veg, setVeg] = useState();
-  const [allergy, setAllergy] = useState([]);
+  const [allergy, setAllergy] = useState("");
   const [type, settype] = useState();
   const [loading, setLoading] = useState(false);
   const [foodItem, setFoodItem] = useState([]);
@@ -171,13 +173,20 @@ const Form = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if (!isSignedIn) {
-      setLoading(false);
-      navigate("/login")
-      return;
-    }
-    onOpen();
+      setLoading(true);
 
+      
+      if (!isSignedIn) {
+        setLoading(false);
+        navigate("/login")
+        return;
+      }
+      if(!gender){
+        setLoading(false);
+        toast("Please select Gender")
+      }
+      onOpen();
+      
 
     const requestBody = {
       primary_cuisine: cuisines,
@@ -330,6 +339,7 @@ const Form = () => {
           label="Choose A Primary Cuisine"
           placeholder="Search A Primary Cuisine"
           className="min-w-xs "
+          isRequired
           // color="white"
           value={cuisines}
           onSelectionChange={setCuisines}
@@ -380,6 +390,7 @@ const Form = () => {
           scrollShadowProps={{
             hideScrollBar: false,
           }}
+          isRequired
         >
           {options?.food_types?.map((countryy) => (
             <AutocompleteItem key={countryy} value={countryy}>
@@ -396,6 +407,7 @@ const Form = () => {
           scrollShadowProps={{
             hideScrollBar: false,
           }}
+          isRequired
         >
           {options?.vegetarian?.map((countryy) => (
             <AutocompleteItem key={countryy} value={countryy}>
@@ -412,6 +424,7 @@ const Form = () => {
           scrollShadowProps={{
             hideScrollBar: false,
           }}
+          isRequired
         >
           {options?.age?.map((countryy) => (
             <AutocompleteItem key={countryy} value={countryy}>
@@ -452,6 +465,7 @@ const Form = () => {
           value={gender}
           onValueChange={setGender}
           className="radio mt-2 !ml-2 !flex !flex-row"
+          isRequired="true"
         >
           <Radio value="girl" color="success" className="!text-white">
             Girl
@@ -465,10 +479,10 @@ const Form = () => {
           <button
             type="submit"
             className="bg-[#39ac23] flex items-center justify-center hover:bg-[#1cb457] w-full max-w-[700px] text-white py-2.5 px-6 rounded-md focus:bg-[#2c7da0] focus:outline-none text-[16px]   disabled:cursor-none"
-            onClick={(e) => {
-              handleFormSubmit(e);
-              setLoading(true);
-            }}
+            // onClick={(e) => {
+            //   handleFormSubmit(e);
+            //   setLoading(true);
+            // }}
             disabled={loading}
           >
             {loading ? (
