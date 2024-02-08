@@ -22,7 +22,7 @@ const Starter = () => {
         <button
           className="bg-[#CBEA7B] mx-auto max-w-[300px] md:mx-0 p-4 lg:px-6 lg:py-6 rounded-lg text-base md:text-[24px] text-[#262626] font-semibold"
           onClick={() => {
-            navigate("/home");
+            navigate("/nutrichimp");
           }}
         >
           Get Started 

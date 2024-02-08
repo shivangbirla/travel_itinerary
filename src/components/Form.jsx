@@ -137,6 +137,7 @@ const Form = () => {
         },
         body: JSON.stringify({
           name: selectedMeal,
+          age,
         }),
       });
 

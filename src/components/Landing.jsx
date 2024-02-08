@@ -60,7 +60,7 @@ const Hero = () => {
             }}
             className="cursor-pointer py-1 px-2 md:py-2 md:px-4 border-2 border-white text-white rounded-full mt-5 text-[13px] md:text-[16px]"
             onClick={()=>{
-              navigate('/home')
+              navigate("/nutrichimp");
             }}
           >
             Get Started
