@@ -45,7 +45,7 @@ import { toHaveStyle } from "@testing-library/jest-dom/matchers";
 import { toast } from "sonner";
 
 
-export const BASE_URL = "https://api.nutrichimp.zencoresolutions.co";
+export const BASE_URL = "https://api.hypothetica.xyz";
 
 const Form = () => {
     const { isSignedIn, user, isLoaded } = useUser();
